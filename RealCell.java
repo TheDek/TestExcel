@@ -1,3 +1,5 @@
+import java.text.DecimalFormat;
+
 public class RealCell implements Cell
 {
     protected String fullCellText;
@@ -16,17 +18,19 @@ public class RealCell implements Cell
     @Override
     public String abbreviatedCellText()
     {
-        String formattedText = String.format("%.10s", fullCellText);
-        if (formattedText.length() < 10)
+        DecimalFormat df = new DecimalFormat("#.##########"); 
+        String formattedText = df.format(getDoubleValue());
+
+        if (formattedText.length() > 10)
         {
-            formattedText = String.format("%-10s", formattedText);
+            return formattedText.substring(0, 10); 
         }
-        return formattedText;
+        return String.format("%-10s", formattedText);
     }
 
     public double getDoubleValue()
     {
-        if (fullCellText.matches("-?\\d+(\\.\\d+)?"))
+        if (fullCellText.matches("-?\\d+(\\.\\d+)?")) 
         {
             return Double.parseDouble(fullCellText);
         }
