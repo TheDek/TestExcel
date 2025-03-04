@@ -1,34 +1,38 @@
-//Update this file with your own code.
+// SpreadsheetLocation.java
 
-public class SpreadsheetLocation implements Location
-{// B3 =>col =1 row=2
-    private String cellName;
-    private char cellChar;
+public class SpreadsheetLocation implements Location 
+{
+    private int row;
+    private int col;
 
-    public SpreadsheetLocation(String cellName)//"B11"
+    public SpreadsheetLocation(String cellName) 
     {
-        this.cellName = cellName;
-        cellChar = cellName.charAt(0);
-    }
-    
-    @Override
-    public int getRow()
-    {
-        if (cellName.length()>1)
+        // Extract column letter and row number from cellName
+        String columnPart = cellName.replaceAll("[^A-Za-z]", "").toUpperCase();
+        String rowPart = cellName.replaceAll("[^0-9]", "");
+
+        // Convert column letter to index (A -> 0, B -> 1, ..., Z -> 25, AA -> 26, etc.)
+        col = 0;
+        for (int i = 0; i < columnPart.length(); i++) 
         {
-            int row = Integer.parseInt(cellName.substring(1));
-            return row-1;
+            col *= 26;
+            col += columnPart.charAt(i) - 'A' + 1;
         }
-        return -1;
+        col--; // Convert to zero-based index
+
+        // Convert row number to zero-based index
+        row = Integer.parseInt(rowPart) - 1;
     }
 
     @Override
-    public int getCol()
+    public int getRow() 
     {
-        int colInt = (int) cellChar;
-        
-        // TODO Auto-generated method stub
-        return (colInt - 97);
+        return row;
     }
 
+    @Override
+    public int getCol() 
+    {
+        return col;
+    }
 }
