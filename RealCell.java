@@ -1,36 +1,33 @@
-public class RealCell implements Cell
+public abstract class RealCell implements Cell
 {
-    private double value;
-    private String valueString;
-    
-    public RealCell(String valueString)
+    private String userInput;
+
+    public RealCell(String input)
     {
-        this.valueString = valueString;
-        value = 0.0;
+        this.userInput = input;
     }
-    
+
+    @Override
+    public String fullCellText()
+    {
+        return userInput;
+    }
+
+    public abstract double getDoubleValue();
+
+    @Override
     public String abbreviatedCellText()
     {
-        if (valueString.length() < 10) 
+        double value = getDoubleValue();
+        String text = String.format("%.10g", value); // Ensures up to 10 significant digits
+
+        if (text.length() > 10)
         {
-            while (valueString.length() < 10)
-                valueString += " ";
+            return text.substring(0, 10);
         }
-        else if (valueString.length() == 10)
-            return valueString;
         else
         {
-            return valueString.substring(0,10);
+            return String.format("%-10s", text);
         }
-        return valueString;
     }
-    
-	public String fullCellText()
-	{
-	    return valueString;
-	}
-	public double getDoubleValue()
-	{
-	    return value;
-	}
 }
