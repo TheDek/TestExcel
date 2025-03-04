@@ -1,36 +1,35 @@
 public class RealCell implements Cell
 {
-    private double value;
-    private String valueString;
-    
-    public RealCell(String valueString)
+    protected String fullCellText;
+
+    public RealCell(String input)
     {
-        this.valueString = valueString;
-        value = 0.0;
+        this.fullCellText = input;
     }
-    
+
+    @Override
+    public String fullCellText()
+    {
+        return fullCellText;
+    }
+
+    @Override
     public String abbreviatedCellText()
     {
-        if (valueString.length() < 10) 
+        String formattedText = String.format("%.10s", fullCellText);
+        if (formattedText.length() < 10)
         {
-            while (valueString.length() < 10)
-                valueString += " ";
+            formattedText = String.format("%-10s", formattedText);
         }
-        else if (valueString.length() == 10)
-            return valueString;
-        else
-        {
-            return valueString.substring(0,10);
-        }
-        return valueString;
+        return formattedText;
     }
-    
-	public String fullCellText()
-	{
-	    return valueString;
-	}
-	public double getDoubleValue()
-	{
-	    return value;
-	}
+
+    public double getDoubleValue()
+    {
+        if (fullCellText.matches("-?\\d+(\\.\\d+)?"))
+        {
+            return Double.parseDouble(fullCellText);
+        }
+        return 0.0;
+    }
 }
