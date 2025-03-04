@@ -1,32 +1,37 @@
 public class PercentCell extends RealCell
 {
-    private double value;
-    private String valueString;
-    public PercentCell(String valueString)
+    public PercentCell(String input)
     {
-        super(valueString);
-        // value = (Double.parseDouble(valueString.substring(0,(valueString.length() - 1)))/100);
-        value = (Double.parseDouble(valueString.substring(0,(valueString.length() - 1))));
+        super(input);
     }
-    public String abbreviatedCellText()
+
+    @Override
+    public double getDoubleValue()
     {
-        String formattedValue = String.format("%.0f", value) + "%";
-        if (formattedValue.length() < 10) 
-        {
-            while (formattedValue.length() < 10)
-                formattedValue += " ";
-        }
-        else if (formattedValue.length() == 10)
-            return formattedValue;
-        else
-        {
-            return formattedValue.substring(0,10);
-        }
-        return formattedValue;
+        String percentStr = fullCellText().substring(0, fullCellText().length() - 1);
+        double percentValue = Double.parseDouble(percentStr);
+        return percentValue / 100.0;
     }
+
+    @Override
     public String fullCellText()
     {
-        return Double.toString(value/100);
+        return Double.toString(getDoubleValue()); // Converts percent to decimal form
     }
-    
+
+    @Override
+    public String abbreviatedCellText()
+    {
+        int displayPercent = (int) (getDoubleValue() * 100);
+        String text = displayPercent + "%";
+
+        if (text.length() > 10)
+        {
+            return text.substring(0, 10);
+        }
+        else
+        {
+            return String.format("%-10s", text);
+        }
+    }
 }
