@@ -1,27 +1,34 @@
 public class ValueCell extends RealCell
 {
-    private double value;
-    private String valueString;
-    public ValueCell(String valueString)
+    public ValueCell(String input)
     {
-        super(valueString);
-        value = Double.parseDouble(valueString);
+        super(input);
     }
+
+    @Override
+    public double getDoubleValue()
+    {
+        return Double.parseDouble(fullCellText());
+    }
+
+    @Override
     public String abbreviatedCellText()
     {
-        String formattedValue = String.format("%.1f", value);
-        if (formattedValue.length() < 10) 
+        double value = getDoubleValue();
+        String text = String.format("%.1f", value); // Always one decimal place
+
+        if (text.length() > 10)
         {
-            while (formattedValue.length() < 10)
-                formattedValue += " ";
+            return text.substring(0, 10);
         }
-        else if (formattedValue.length() == 10)
-            return formattedValue;
         else
         {
-            return formattedValue.substring(0,10);
+            StringBuilder sb = new StringBuilder(text);
+            while (sb.length() < 10)
+            {
+                sb.append(" ");
+            }
+            return sb.toString();
         }
-        return formattedValue;
     }
-    
 }
