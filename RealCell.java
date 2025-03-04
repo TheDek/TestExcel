@@ -1,39 +1,36 @@
-import java.text.DecimalFormat;
-
 public class RealCell implements Cell
 {
-    protected String fullCellText;
-
-    public RealCell(String input)
+    private double value;
+    private String valueString;
+    
+    public RealCell(String valueString)
     {
-        this.fullCellText = input;
+        this.valueString = valueString;
+        value = 0.0;
     }
-
-    @Override
-    public String fullCellText()
-    {
-        return fullCellText;
-    }
-
-    @Override
+    
     public String abbreviatedCellText()
     {
-        DecimalFormat df = new DecimalFormat("#.##########"); 
-        String formattedText = df.format(getDoubleValue());
-
-        if (formattedText.length() > 10)
+        if (valueString.length() < 10) 
         {
-            return formattedText.substring(0, 10); 
+            while (valueString.length() < 10)
+                valueString += " ";
         }
-        return String.format("%-10s", formattedText);
-    }
-
-    public double getDoubleValue()
-    {
-        if (fullCellText.matches("-?\\d+(\\.\\d+)?")) 
+        else if (valueString.length() == 10)
+            return valueString;
+        else
         {
-            return Double.parseDouble(fullCellText);
+            return valueString.substring(0,10);
         }
-        return 0.0;
+        return valueString;
     }
+    
+	public String fullCellText()
+	{
+	    return valueString;
+	}
+	public double getDoubleValue()
+	{
+	    return value;
+	}
 }
