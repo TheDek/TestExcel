@@ -80,7 +80,7 @@ public class Spreadsheet implements Grid
                 
                 if (valueString.substring(0,1).equals("("))
                 {
-                    sheet[loc.getRow()][loc.getCol()] = new RealCell("formula");
+                    sheet[loc.getRow()][loc.getCol()] = new FormulaCell("formula", this);
                     return getGridText(); 
                 }
                 else if(valueString.substring(valueString.length()-1).equals("%"))
